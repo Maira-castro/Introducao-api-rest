@@ -1,6 +1,7 @@
 import express from "express"
 import usuarioRoutes from "./routes/routesUsuario.js" //importar o que está em exportar em routesUsuario.js, neste caso, as rotas
 import fornecedorRoutes from "./routes/routesfornecedor.js" 
+import produtosRoutes from "./routes/routesProduto.js"
 const app = express()
 app.use(express.json()) //permitir usar JSON 
 
@@ -16,6 +17,7 @@ app.get("/", (req, res) => {
 //para usar as rotas de usuario - apartir de uma rota inicial 
 app.use("/usuarios",usuarioRoutes)
 app.use("/fornecedores",fornecedorRoutes)
+app.use("/produtos",produtosRoutes)
 //servidor vai rodar neste caminho
 app.listen(port, localhost, () => {
     console.log(`disponivel em -> http://${localhost}:${port}`);
