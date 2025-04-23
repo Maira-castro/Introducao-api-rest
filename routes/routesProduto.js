@@ -8,10 +8,12 @@ const produtos = [
     { id: 4, nome: 'Webcam', preco: 350 }
 ]
 
+//rota para retornar os produtos
 router.get("/produtos", (req, res) => {
     res.status(200).json(produtos)
 })
 
+//rota para adicionar produto
 router.post("/produtos", (req, res) => {
     const { nome, preco } = req.body
     let novo = {
@@ -21,8 +23,10 @@ router.post("/produtos", (req, res) => {
     }
     produtos.push(novo)
     res.status(201).json({ message: "Produto adicionado com sucesso!" })
+    console.log("Produto criado com sucesso!", novo);
 })
 
+//rota para atualizar produto
 router.put("/produtos/:id", (req, res) => {
     const { id } = req.params
     const { novoNome, novoPreco } = req.body
@@ -31,29 +35,34 @@ router.put("/produtos/:id", (req, res) => {
         return produtos.id == id
     })
     if (indice === -1) {
-        return res.status(404).send({ error: "Id não encontrado!" })
+
+        return res.status(404).send({ error: `Produto com Id=${id} não foi encontrado!` })
     }
 
     produtos[indice].nome = novoNome
     produtos[indice].preco = novoPreco
 
     res.send(produtos)
+    console.log("Produto atualizado com sucesso!", produtos[indice]);
 })
 
+//rota para deletar produto
 router.delete("/produtos/:id", (req, res) => {
-    const { id } = req.params
+        const { id } = req.params
 
-    const indice = produtos.findIndex((produtos) => {
-        return produtos.id == id
-    })
+        const indice = produtos.findIndex((produtos) => {
+            return produtos.id == id
+        })
 
-    if (indice === -1) {
-        return res.status(404).send({ error: "Id não encontrado!" })
-    }
-    produtos.splice(indice, 1)
-    res.send(produtos)
+        if (indice === -1) {
+            return res.status(404).send({ error: `Produto com Id=${id} não foi encontrado!` })
+        }
+        produtos.splice(indice, 1)
+        res.send(produtos)
+        console.log(`produto com id=${id} foi excluido.`);
 })
 
+//rota para retornar produto por id
 router.get("/produtos/:id", (req, res) => {
     const { id } = req.params
 
@@ -61,10 +70,9 @@ router.get("/produtos/:id", (req, res) => {
         return produtos.id == id
     })
     if (indice === -1) {
-        res.status(404).send({ error: "Id não encontrado!" })
+        return res.status(404).send({ error: `Produto com Id=${id} não foi encontrado!` })
     }
-    const produto = produtos[indice]
-    res.send(produto)
+    res.send(produtos[indice])
 })
 
 export default router
